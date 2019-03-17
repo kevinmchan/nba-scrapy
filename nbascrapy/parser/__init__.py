@@ -1,0 +1,1 @@
+from nbascrapy.parser.parser import BoxscoreParser
