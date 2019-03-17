@@ -1,0 +1,11 @@
+.ipynb_checkpoints/
+.scrapy/
+.idea/
+.vscode/
+.DS_Store
+logs/
+backup/
+data/
+logs/
+**/__pychache__/
+**/*.pyc
