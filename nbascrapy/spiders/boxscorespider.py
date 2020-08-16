@@ -15,7 +15,8 @@ class BoxscoreSpider(scrapy.Spider):
                 if game["boxscore_link"] is None:
                     self.logger.warning(f"Boxscore link is missing for {game}")
                     continue
-                url = "https://www.basketball-reference.com" + game["boxscore_link"]
+                url = "https://www.basketball-reference.com" + \
+                    game["boxscore_link"]
                 yield scrapy.Request(url=url, callback=self.parse)
 
     def parse_player(self, player):
@@ -35,15 +36,20 @@ class BoxscoreSpider(scrapy.Spider):
 
     def parse(self, response):
         game_url = response.url
-        for section in response.css("div.table_wrapper[id*=_box_]"):
+        for section in response.css("div.table_wrapper[id*=-game-]"):
             section_id = section.attrib.get("id", "")
             if "basic" in section_id:
                 boxscore = "basic"
             elif "advanced" in section_id:
                 boxscore = "advanced"
 
-            team = section.css("div.section_heading h2::text").extract_first() or team
+            team = (
+                section
+                .css("div.section_heading h2::text")
+                .extract_first()
+            ) or team
             team = team.split("(")[0].strip()
+
             for i, player in enumerate(
                 section.css("table.stats_table tbody tr:not(.thead)")
             ):
