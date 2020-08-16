@@ -1,0 +1,10 @@
+name: nbascrapy
+channels:
+  - defaults
+dependencies:
+  - ipykernel
+  - pip
+  - python
+  - scrapy
+  - pip:
+      - jsonlines
