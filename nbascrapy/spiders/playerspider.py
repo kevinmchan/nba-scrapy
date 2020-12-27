@@ -3,11 +3,15 @@ import scrapy
 
 class PlayerSpider(scrapy.Spider):
     name = "player"
-    custom_settings = {"FEED_URI": "data/player.jl"}
+    custom_settings = {"FEED_URI": "%(output_dir)s/player.jl"}
     start_urls = [
         f"https://www.basketball-reference.com/players/{chr(i)}/"
         for i in range(ord("a"), ord("z") + 1)
     ]
+
+    def __init__(self, output_dir):
+        self.output_dir = output_dir
+        super().__init__()
 
     def parse(self, response):
         for player in response.css("#players tbody tr"):

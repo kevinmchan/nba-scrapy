@@ -4,15 +4,17 @@ import jsonlines
 
 class GameSpider(scrapy.Spider):
     name = "game"
-    custom_settings = {"FEED_URI": "data/game.jl"}
+    custom_settings = {"FEED_URI": "%(output_dir)s/game.jl"}
 
-    def __init__(self, filename, min_season=None, max_season=None):
-        self.datafile = filename
+    def __init__(self, seasons_file, output_dir, min_season=None, max_season=None):
+        self.seasons_file = seasons_file
         self.min_season = min_season or "0000-01"
         self.max_season = max_season or "9998-99"
+        self.output_dir = output_dir
+        super().__init__()
 
     def start_requests(self):
-        with jsonlines.open(self.datafile) as reader:
+        with jsonlines.open(self.seasons_file) as reader:
             for season in reader:
                 if (
                     season["season"] < self.min_season

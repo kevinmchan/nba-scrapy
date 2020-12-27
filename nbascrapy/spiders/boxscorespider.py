@@ -4,13 +4,15 @@ import jsonlines
 
 class BoxscoreSpider(scrapy.Spider):
     name = "boxscore"
-    custom_settings = {"FEED_URI": "data/boxscore.jl"}
+    custom_settings = {"FEED_URI": "%(output_dir)s/boxscore.jl"}
 
-    def __init__(self, filename):
-        self.datafile = filename
+    def __init__(self, games_file, output_dir):
+        self.games_file = games_file
+        self.output_dir = output_dir
+        super().__init__()
 
     def start_requests(self):
-        with jsonlines.open(self.datafile) as reader:
+        with jsonlines.open(self.games_file) as reader:
             for game in reader:
                 if game["boxscore_link"] is None:
                     self.logger.warning(f"Boxscore link is missing for {game}")

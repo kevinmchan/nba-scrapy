@@ -3,8 +3,12 @@ import scrapy
 
 class SeasonSpider(scrapy.Spider):
     name = "season"
-    custom_settings = {"FEED_URI": "data/season.jl"}
+    custom_settings = {"FEED_URI": "%(output_dir)s/season.jl"}
     start_urls = ["https://www.basketball-reference.com/leagues/"]
+
+    def __init__(self, output_dir):
+        self.output_dir = output_dir
+        super().__init__()
 
     def parse(self, response):
         for season in response.css("table.stats_table tr:not(.thead)"):

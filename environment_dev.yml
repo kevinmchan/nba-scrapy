@@ -4,7 +4,9 @@ channels:
 dependencies:
   - ipykernel
   - pip
+  - protego
   - python
   - scrapy
+  - pandas
   - pip:
       - jsonlines

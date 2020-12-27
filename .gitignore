@@ -6,6 +6,7 @@
 logs/
 backup/
 data/
+db/
 logs/
 **/__pychache__/
 **/*.pyc

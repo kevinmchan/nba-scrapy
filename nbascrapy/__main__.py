@@ -39,15 +39,25 @@ args = parser.parse_args()
 
 @defer.inlineCallbacks
 def crawl(min_season, max_season):
-    yield runner.crawl("season")
+    dtime = datetime.today().strftime("%Y%m%d%H%M%S")
+    output_dir = f"data/{dtime}"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    yield runner.crawl("season", output_dir=output_dir)
     yield runner.crawl(
         "game",
-        filename="data/season.jl",
+        seasons_file=f"{output_dir}/season.jl",
         min_season=min_season,
         max_season=max_season,
+        output_dir=output_dir,
     )
-    yield runner.crawl("boxscore", filename="data/game.jl")
-    yield runner.crawl("player")
+    yield runner.crawl(
+        "boxscore",
+        games_file=f"{output_dir}/game.jl",
+        output_dir=output_dir,
+    )
+    yield runner.crawl("player", output_dir=output_dir)
     reactor.stop()
 
 
